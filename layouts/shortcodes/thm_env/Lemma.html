@@ -1,0 +1,19 @@
+{{ $text := .Get "text"}}
+{{ $exists := false }}
+{{ with .Page.Store.Get "lemmas" }}
+{{ $exists = true }}
+{{ else }}
+{{/* first call, so lemmas is 1 */}}
+{{ .Page.Store.Set "lemmas" 1 }}
+{{ end }}
+{{ if $exists }}
+{{ .Page.Store.Add "lemmas" 1 }}
+{{ end }}
+{{ if isset .Page.Params "subsection" }}
+<p><b>Lemma {{ .Page.Params.chapter }}.{{ .Page.Params.section }}.{{ .Page.Params.subsection }}.{{
+                                .Page.Store.Get "lemmas" }}.</b> <i>{{$text }}</i></p>
+{{ else }}
+<p><b>Lemma {{ .Page.Params.chapter }}.{{ .Page.Params.section }}.{{.Page.Store.Get "lemmas" }}.</b>
+                <i>{{$text}}</i>
+</p>
+{{ end }}

@@ -1,0 +1,17 @@
+{{/* Usage: RefLabel [label] [description] 
+     This creates a link to the provided label. 
+     See the README for full documentation.      */}} 
+{{- if (.Site.Store.Get "skipLabelRefs") -}} 
+{{- else -}} 
+    {{- $labelDict := partial "labelDictionary.html" . -}}
+
+    {{/* a slice with the index and the link in that order. */}} 
+    {{- with $labelDict.Get (.Get 0) -}} 
+        <a href="{{ index . 1 }}">
+            {{- with ($.Get 1) }}{{ . }} {{ end }}{{ index . 0 -}} 
+        </a>
+    {{- else -}} 
+        {{/* no label found...just print the label in red. */}} 
+        <b style="color : red">BAD REF: {{- .Get 0 -}}</b>
+    {{- end -}} 
+{{- end -}} 

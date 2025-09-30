@@ -1,0 +1,33 @@
+{{- $onCurrPage := eq .RelPermalink page.RelPermalink -}} 
+{{- $nameClass := "" -}} 
+{{- if $onCurrPage -}} 
+    {{- $nameClass = "class=\"curr-entry\"" -}} 
+{{- end -}} 
+{{- $name := printf "<span %s><a href=\"%s\"><b>%s</b> %s</a></span>" 
+        $nameClass 
+        .RelPermalink 
+        (partial "getIndex.html" .) 
+        (markdownify .Params.title)
+    | safeHTML -}} 
+{{- $entries := union .Sections .RegularPages -}} 
+<div class="toc-entry"> 
+{{- if not (eq (len $entries) 0) -}} 
+    {{- if isset .Params "section" -}} 
+        {{- $entries = sort $entries ".Params.subsection" "asc" -}}
+    {{- else -}} 
+        {{- $entries = sort $entries ".Params.section" "asc" -}}
+    {{- end -}} 
+    {{- if or (page.IsDescendant .) (eq page .) -}} 
+        <details open=""> 
+    {{- else -}} 
+        <details> 
+    {{- end -}} 
+        <summary class="toc-summary">{{- $name -}}</summary> 
+        {{- range $entries -}} 
+            {{- partial "toc.html" . -}} 
+        {{- end -}} 
+    </details>
+{{- else -}} 
+    {{- $name -}}    
+{{- end -}} 
+</div>

@@ -1,0 +1,19 @@
+{{ $text := .Get "text"}}
+{{ $exists := false }}
+{{ with .Page.Store.Get "theorems" }}
+{{ $exists = true }}
+{{ else }}
+{{/* first call, so theorems is 1 */}}
+{{ .Page.Store.Set "theorems" 1 }}
+{{ end }}
+{{ if $exists }}
+{{ .Page.Store.Add "theorems" 1 }}
+{{ end }}
+{{ if isset .Page.Params "subsection" }}
+<p><b>Theorem {{ .Page.Params.chapter }}.{{ .Page.Params.section }}.{{ .Page.Params.subsection }}.{{
+                                .Page.Store.Get "theorems" }}.</b> <i>{{$text }}</i></p>
+{{ else }}
+<p><b>Theorem {{ .Page.Params.chapter }}.{{ .Page.Params.section }}.{{.Page.Store.Get "theorems" }}.</b>
+                <i>{{$text}}</i>
+</p>
+{{ end }}

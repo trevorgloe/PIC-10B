@@ -1,0 +1,41 @@
+{{- define "Main" -}} 
+    {{- partial "chapterControls.html" . -}} 
+
+    <h1>{{- markdownify .Params.title -}}</h1>
+    {{- .Content -}} 
+
+    {{- $group := "Chapter" -}} 
+    {{- if isset .Params "section" -}} 
+        {{- $group = "Section" -}} 
+    {{- end -}} 
+
+    {{- $entries := union .Sections .RegularPages -}} 
+    {{- range .Sections -}} 
+        {{- $entries = union $entries .RegularPages -}} 
+    {{- end -}} 
+
+    {{- if not (eq (len $entries) 0) -}} 
+    <h3>Later In This {{ $group }}:</h3>
+
+    {{- $entries = sort $entries ".Params.subsection" "asc" -}} 
+    {{- $entries = sort $entries ".Params.section" "asc" -}} 
+    {{- range $entries -}} 
+
+    {{- if and (not (isset $.Params "section")) (isset .Params "subsection") -}} 
+    <p style="padding-left : 2rem">
+    {{- else -}} 
+    <p>
+    {{- end -}}
+        <a href="{{ .RelPermalink }}" class="preview-link">
+        <b>{{ partial "getIndex.html" . }}. {{ .Title | markdownify }} </b>
+        {{- $text := .Content | markdownify | plainify -}} 
+        <span class="preview-summary">
+            {{- if not (eq .Title "Review questions") -}} 
+                {{- substr $text 0 150 | strings.TrimSpace | safeHTML -}}
+            {{- end -}}...
+        </span>
+        </a>
+    </p>
+    {{- end -}} 
+    {{- end -}} 
+{{- end -}} 

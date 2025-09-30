@@ -1,0 +1,19 @@
+{{ $text := .Get "text"}}
+{{ $exists := false }}
+{{ with .Page.Store.Get "build_errors" }}
+{{ $exists = true }}
+{{ else }}
+{{/* first call, so counter is 1 */}}
+{{ .Page.Store.Set "build_errors" 1 }}
+{{ end }}
+{{ if $exists }}
+{{ .Page.Store.Add "build_errors" 1 }}
+{{ end }}
+{{ if isset .Page.Params "subsection" }}
+<p><b>Build Error {{ .Page.Params.chapter }}.{{ .Page.Params.section }}.{{ .Page.Params.subsection }}.{{
+                                .Page.Store.Get "build_errors" }}.</b> <i>{{$text }}</i></p>
+{{ else }}
+<p><b>Build Error {{ .Page.Params.chapter }}.{{ .Page.Params.section }}.{{.Page.Store.Get "build_errors" }}.</b>
+                <i>{{$text}}</i>
+</p>
+{{ end }}

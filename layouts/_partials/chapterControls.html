@@ -1,0 +1,74 @@
+{{- $chapters := sort .Site.Sections ".Params.chapter" "asc" -}} 
+{{- $currIndex := sub (int .Params.chapter) 1 -}} 
+{{- $currChap := index $chapters $currIndex -}} 
+{{- $prevChap := "" -}} 
+{{- if gt $currIndex 0 -}} 
+    {{- $prevChap = index $chapters (sub $currIndex 1) -}} 
+{{- end -}} 
+
+{{- $nextChap := "" -}} 
+{{- if lt $currIndex (sub (len $chapters) 1) -}} 
+    {{- $nextChap = index $chapters (add $currIndex 1) -}} 
+{{- end -}} 
+
+{{- $sections := slice -}} 
+{{- range .Site.Pages -}} 
+    {{- if ne . .Site.Home -}} 
+        {{- $sections = append . $sections -}} 
+    {{- end -}} 
+{{- end -}} 
+
+{{- $sections = sort $sections ".Params.subsection" -}} 
+{{- $sections = sort $sections ".Params.section" -}} 
+{{- $sections = sort $sections ".Params.chapter" -}} 
+
+{{- range (seq 0 (sub (len $sections) 1)) -}} 
+    {{- if eq (index $sections .) page -}} 
+        {{- $currIndex = . -}} 
+        {{- break -}} 
+    {{- end -}} 
+{{- end -}} 
+
+{{- $prevSec := "" -}} 
+{{- if gt $currIndex 0 -}} 
+    {{- $prevSec = index $sections (sub $currIndex 1) -}} 
+{{- end -}} 
+
+{{- $nextSec := "" -}} 
+{{- if lt $currIndex (sub (len $sections) 1) -}} 
+    {{- $nextSec = index $sections (add $currIndex 1) -}} 
+{{- end -}} 
+
+<div id="chapter-controls"> 
+    <div class="chapter-button"> 
+        {{- if not (eq $prevChap "") -}} 
+            <a href="{{- $prevChap.RelPermalink -}}">&lt;&lt;</a> 
+        {{- else -}} 
+            &lt;&lt; 
+        {{- end -}} 
+    </div> 
+    <div class="chapter-button"> 
+        {{- if not (eq $prevSec "") -}} 
+            <a href="{{- $prevSec.RelPermalink -}}">&lt;</a> 
+        {{- else -}} 
+            &lt; 
+        {{- end -}} 
+    </div> 
+    <div class="chapter-header"> 
+        {{- partial "getIndex.html" . -}} 
+    </div> 
+    <div class="chapter-button"> 
+        {{- if not (eq $nextSec "") -}} 
+            <a href="{{- $nextSec.RelPermalink -}}">&gt;</a> 
+        {{- else -}} 
+            &gt; 
+        {{- end -}} 
+    </div> 
+    <div class="chapter-button"> 
+        {{- if not (eq $nextChap "") -}} 
+            <a href="{{- $nextChap.RelPermalink -}}">&gt;&gt;</a> 
+        {{- else -}} 
+            &gt;&gt; 
+        {{- end -}} 
+    </div> 
+</div>

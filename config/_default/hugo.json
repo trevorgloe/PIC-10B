@@ -1,0 +1,51 @@
+{
+    "baseURL": "https://www.math.ucla.edu/~mjandr/10A-textbook/",
+    "languageCode": "en-us",
+    "title": "PIC 10A: Introduction to Programming in C++",
+    "disableHugoGeneratorInject": true,
+    "publishDir": "output",
+    "disableKinds": [
+        "sitemap",
+        "rss",
+        "taxonomy"
+    ],
+
+    "markup": {
+        "highlight": {
+            "anchorLineNos": false,
+            "codeFences": true,
+            "guessSyntax": false,
+            "hl_Lines": "",
+            "hl_inline": false,
+            "lineAnchors": "",
+            "lineNoStart": 1,
+            "lineNos": true,
+            "lineNumbersInTable": true,
+            "noClasses": false,
+            "style": "base16-snazzy",
+            "tabWidth": 4,
+            "wrapperClass": "highlight"
+        }, 
+
+        "goldmark": {
+            "renderer" : {
+                "unsafe": true
+            }, 
+
+            "renderHooks" : {
+                "link" : {
+                    "useEmbedded" : "fallback"
+                } 
+            }, 
+
+            "extensions" : {
+                "passthrough" : {
+                    "enable" : true, 
+                    "delimiters" : {
+                        "inline" : [["@", "@"]]
+                    } 
+                } 
+            } 
+        } 
+    }
+}

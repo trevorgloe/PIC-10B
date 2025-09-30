@@ -1,0 +1,19 @@
+{{ $text := .Get "text"}}
+{{ $exists := false }}
+{{ with .Page.Store.Get "counter" }}
+{{ $exists = true }}
+{{ else }}
+{{/* first call, so counter is 1 */}}
+{{ .Page.Store.Set "counter" 1 }}
+{{ end }}
+{{ if $exists }}
+{{ .Page.Store.Add "counter" 1 }}
+{{ end }}
+{{ if isset .Page.Params "subsection" }}
+<p><b>Undefined Behavior {{ .Page.Params.chapter }}.{{ .Page.Params.section }}.{{ .Page.Params.subsection }}.{{
+                                .Page.Store.Get "counter" }}.</b> <i>{{$text }}</i></p>
+{{ else }}
+<p><b>Undefined Behavior {{ .Page.Params.chapter }}.{{ .Page.Params.section }}.{{.Page.Store.Get "counter" }}.</b>
+                <i>{{$text}}</i>
+</p>
+{{ end }}

@@ -1,0 +1,21 @@
+{{ $text := .Get "text"}}
+{{ $exists := false }}
+{{ with .Page.Store.Get "remarks" }}
+{{ $exists = true }}
+{{ else }}
+{{/* first call, so remarks is 1 */}}
+{{ .Page.Store.Set "remarks" 1 }}
+{{ end }}
+{{ if $exists }}
+{{ .Page.Store.Add "remarks" 1 }}
+{{ end }}
+{{ if isset .Page.Params "subsection" }}
+<p><b>Remark {{ .Page.Params.chapter }}.{{ .Page.Params.section }}.{{ .Page.Params.subsection }}.{{
+                                .Page.Store.Get "remarks" }}.</b>
+                {{ .Inner | .Page.RenderString }}
+</p>
+{{ else }}
+<p><b>Remark {{ .Page.Params.chapter }}.{{ .Page.Params.section }}.{{.Page.Store.Get "remarks" }}.</b>
+                {{ .Inner | .Page.RenderString }}
+</p>
+{{ end }}

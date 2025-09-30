@@ -1,0 +1,6 @@
+{{- define "Main" -}} 
+    {{- partial "chapterControls.html" . -}} 
+
+    <h1>{{- markdownify .Params.title -}}</h1>
+    {{- .Content -}} 
+{{- end -}} 

@@ -1,0 +1,19 @@
+{{ $text := .Get "text"}}
+{{ $exists := false }}
+{{ with .Page.Store.Get "notations" }}
+{{ $exists = true }}
+{{ else }}
+{{/* first call, so notations is 1 */}}
+{{ .Page.Store.Set "notations" 1 }}
+{{ end }}
+{{ if $exists }}
+{{ .Page.Store.Add "notations" 1 }}
+{{ end }}
+{{ if isset .Page.Params "subsection" }}
+<p><b>Notation {{ .Page.Params.chapter }}.{{ .Page.Params.section }}.{{ .Page.Params.subsection }}.{{
+                                .Page.Store.Get "notations" }}.</b> {{$text }}</p>
+{{ else }}
+<p><b>Notation {{ .Page.Params.chapter }}.{{ .Page.Params.section }}.{{.Page.Store.Get "notations" }}.</b>
+                {{$text}}
+</p>
+{{ end }}

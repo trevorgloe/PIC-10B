@@ -1,0 +1,24 @@
+{{/* Usage: plain_thm_env [type] [label] */}}
+{{/* "type" is Error, Definition, etc.   */}} 
+{{- with .Page.Store.Get "counter" -}} 
+    {{- $.Page.Store.Add "counter" 1 -}}
+{{- else -}} 
+    {{- .Page.Store.Set "counter" 1 -}}   
+{{- end -}} 
+{{- $index := (partial "getIndex.html" .Page) -}} 
+{{- $index = add $index "." (.Page.Store.Get "counter" | string) }}
+
+{{- if .Get 1 -}} 
+<span id="{{ .Get 1 }}" class="label-anchor"></span> 
+    {{- $anchorLink := add .Page.RelPermalink "#" (.Get 1) -}} 
+    {{- with .Site.Store.Get "labelDict" -}} 
+    {{- else -}} 
+        {{- .Site.Store.Set "labelDict" newScratch -}} 
+    {{- end -}} 
+    {{- (.Site.Store.Get "labelDict").Set (.Get 1) 
+        (slice $index $anchorLink) -}} 
+{{- end -}}
+
+{{- $contents := printf "**%s %s**\n%s" 
+        (.Get 0) $index (strings.TrimSpace .Inner) -}}
+<p>{{ $contents | markdownify }}</p>

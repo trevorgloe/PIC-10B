@@ -1,0 +1,19 @@
+{{ $text := .Get "text"}}
+{{ $exists := false }}
+{{ with .Page.Store.Get "runtime_errors" }}
+{{ $exists = true }}
+{{ else }}
+{{/* first call, so runtime_errors is 1 */}}
+{{ .Page.Store.Set "runtime_errors" 1 }}
+{{ end }}
+{{ if $exists }}
+{{ .Page.Store.Add "runtime_errors" 1 }}
+{{ end }}
+{{ if isset .Page.Params "subsection" }}
+<p><b>Runtime Error {{ .Page.Params.chapter }}.{{ .Page.Params.section }}.{{ .Page.Params.subsection }}.{{
+                                .Page.Store.Get "runtime_errors" }}.</b> <i>{{$text }}</i></p>
+{{ else }}
+<p><b>Runtime Error {{ .Page.Params.chapter }}.{{ .Page.Params.section }}.{{.Page.Store.Get "runtime_errors" }}.</b>
+                <i>{{$text}}</i>
+</p>
+{{ end }}

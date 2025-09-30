@@ -1,0 +1,32 @@
+{{/* Creates a dictionary whose keys are text "labels"    
+     and whose values are pairs: they store URLs pointing
+     to the labels' locations and their index 
+     (4.2, 3.1.4.1, etc.). These can be equations, 
+     amsthm emulated environments, or pages themselves.   */}} 
+
+{{- if not (.Site.Store.Get "labelDictRendered") -}} 
+    {{- .Site.Store.Set "skipLabelRefs" true -}} 
+    {{- with .Site.Store.Get "labelDict" -}} 
+    {{- else -}} 
+        {{- .Site.Store.Set "labelDict" newScratch -}} 
+    {{- end -}} 
+
+    {{- range .Site.Pages -}} 
+        {{/* if this page has a label... */}} 
+        {{- if isset .Params "label" -}} 
+            {{- (.Site.Store.Get "labelDict").Set .Params.label 
+                (slice (partial "getIndex.html" .) .RelPermalink) -}}
+        {{- end -}} 
+
+        {{/* this forces the page to render! */}}
+        {{/* we'll reset the counter for this. */}} 
+        {{- $tempCounter := .Store.Get "counter" -}} 
+        {{- .Store.Delete "counter" -}} 
+        {{- $noop := .RenderShortcodes -}} 
+        {{- .Store.Set "counter" $tempCounter -}} 
+    {{- end -}} 
+
+    {{- .Site.Store.Set "skipLabelRefs" false -}} 
+    {{- .Site.Store.Set "labelDictRendered" true -}} 
+{{- end -}} 
+{{- return (.Site.Store.Get "labelDict") -}}

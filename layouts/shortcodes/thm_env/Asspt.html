@@ -1,0 +1,19 @@
+{{ $text := .Get "text"}}
+{{ $exists := false }}
+{{ with .Page.Store.Get "assumptions" }}
+{{ $exists = true }}
+{{ else }}
+{{/* first call, so assumptions is 1 */}}
+{{ .Page.Store.Set "assumptions" 1 }}
+{{ end }}
+{{ if $exists }}
+{{ .Page.Store.Add "assumptions" 1 }}
+{{ end }}
+{{ if isset .Page.Params "subsection" }}
+<p><b>Assumption {{ .Page.Params.chapter }}.{{ .Page.Params.section }}.{{ .Page.Params.subsection }}.{{
+                                .Page.Store.Get "assumptions" }}.</b> {{$text }}</p>
+{{ else }}
+<p><b>Assumption {{ .Page.Params.chapter }}.{{ .Page.Params.section }}.{{.Page.Store.Get "assumptions" }}.</b>
+                {{$text}}
+</p>
+{{ end }}

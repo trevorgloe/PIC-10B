@@ -1,0 +1,8 @@
+{{- $i := string .Params.chapter -}} 
+{{- if isset .Params "section" -}} 
+    {{- $i = add $i "." (string .Params.section) -}} 
+    {{- if isset .Params "subsection" -}} 
+        {{- $i = add $i "." (string .Params.subsection) -}} 
+    {{- end -}} 
+{{- end -}} 
+{{- $i -}} 

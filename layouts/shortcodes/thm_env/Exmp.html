@@ -1,0 +1,21 @@
+{{ $text := .Get "text"}}
+{{ $exists := false }}
+{{ with .Page.Store.Get "examples" }}
+{{ $exists = true }}
+{{ else }}
+{{/* first call, so examples is 1 */}}
+{{ .Page.Store.Set "examples" 1 }}
+{{ end }}
+{{ if $exists }}
+{{ .Page.Store.Add "examples" 1 }}
+{{ end }}
+{{ if isset .Page.Params "subsection" }}
+<p><b>Example {{ .Page.Params.chapter }}.{{ .Page.Params.section }}.{{ .Page.Params.subsection }}.{{
+                                .Page.Store.Get "examples" }}.</b>
+                {{ .Inner | .Page.RenderString }}
+</p>
+{{ else }}
+<p><b>Example {{ .Page.Params.chapter }}.{{ .Page.Params.section }}.{{.Page.Store.Get "examples" }}.</b>
+                {{$text}}
+</p>
+{{ end }}

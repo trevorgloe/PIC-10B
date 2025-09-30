@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head> 
+    <meta charset="utf-8"> 
+    <title>{{- .Page.Title -}}</title> 
+
+    <link rel="stylesheet" href="{{- .Site.BaseURL -}}stylesheet.css">
+
+    <!-- syntax highlighting css --> 
+    <link rel="stylesheet" href="{{- .Site.BaseURL -}}highlighting.css">
+
+    <!-- KaTeX CSS -->
+    <link rel="stylesheet" href="{{- .Site.BaseURL -}}katex.min.css">
+
+    <!-- KaTeX Renderer -->
+    <script defer src="{{- .Site.BaseURL -}}katex.min.js"></script>
+
+    <!-- Automatically load KaTeX -->
+    <script defer src="{{- .Site.BaseURL -}}auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+
+    <!-- Hacky solution to custom syntax highlighting... --> 
+    <script defer src="{{- .Site.BaseURL -}}highlight.js"></script>
+</head> 
+<body>
+    <div id="toc"> 
+        {{- range sort .Site.Sections ".Params.chapter" "asc" -}} 
+            {{- partial "toc.html" . -}} 
+        {{- end -}} 
+    </div>
+    
+    <!-- decide on a layout --> 
+    <div id="main-content">
+        {{- block "Main" . -}} 
+            {{- .Content -}} 
+        {{- end -}} 
+    </div>
+</body>
+</html>
