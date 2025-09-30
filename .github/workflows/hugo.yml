@@ -4,7 +4,7 @@ name: Build Site with Hugo
 on:
   # Runs on pushes targeting the default branch
   push:
-    branches: ["fix_pipeline", "master"]
+    branches: ["fix_pipeline", "main"]
   # dont run on push to the public_html director
     paths-ignore: 'public_html/**'
 
